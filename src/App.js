@@ -10,22 +10,23 @@ class App extends Component {
 
   componentWillMount() {
       this.state = {
-        slide: false,
-        flip: false
+        items: ['I\'m number 1', 'I\'m number 2', 'I\'m number 3'],
+        itemNumber: 3
       };
   }
-  onFlip() {
+  onAddItem() {
       this.setState({
-        slide: false,
-        flip: true
+        itemNumber: this.state.itemNumber + 1,
+        items: this.state.items.concat(['I\'m number ' + (this.state.itemNumber + 1)])
       });
   }
 
-  onSlide() {
-      this.setState({
-        slide: true,
-        flip: false
-    });
+  onDeleteItem(id) {
+    const newItems = this.state.items.slice();
+    newItems.splice(id, 1);
+    this.setState({
+      items: newItems
+    })
   }
 
   render() {
@@ -34,9 +35,9 @@ class App extends Component {
           <nav>
               <div className="nav-wrapper orange darken-2">
                   <ul className="left">
-                      <li className="active"><a href="#">TRANSITIONS</a></li>
+                      <li><a href="#">TRANSITIONS</a></li>
                       <li><a href="#">ANIMATIONS</a></li>
-                      <li><a href="#">REACTJS + CSS TRANSITIONS</a></li>
+                      <li className="active"><a href="#">REACTJS + CSS TRANSITIONS</a></li>
                       <li><a href="#">REACTJS + CSS ANIMATIONS</a></li>
                   </ul>
               </div>
@@ -50,21 +51,19 @@ class App extends Component {
 
               <div className="row">
                   <div className="s8 offset-s2 center-align">
-                      <div className={"card deep-purple z-depth-2 " + (this.state.slide ? 'slide' : '') + (this.state.flip ? 'flip' : '')}
-                           style={{...styles, opacity: this.state.opacity, transform: `scale(${this.state.scale})`}}>
-                          <div className="card-content white-text">
-                              <span className="card-title">Awesome Animations!</span>
+                      <a className='waves-effect waves-light btn' onClick={this.onAddItem.bind(this)}>Add Item</a>
                               <p>CSS Animations are pretty cool. But combined with ReactJS ... &lt;3</p>
                           </div>
-                          <div className="card-action">
-                              <a onClick={this.onFlip.bind(this)} style={{cursor: 'pointer'}}>FLIP</a>
-                              <a onClick={this.onSlide.bind(this)} style={{cursor: 'pointer'}}>SLIDE</a>
-                          </div>
+                          <ul className="collection">
+                            {this.state.items.map((item, i) => {
+                              return (
+                                <li key={item} className="collection-item" onClick={this.onDeleteItem.bind(this,i)} style={{cursor: 'pointer', textAlign: 'center'}}>{item}</li>
+                              )
+                            })}
+                          </ul>
                       </div>
                   </div>
               </div>
-          </div>
-      </div>
 
     );
   }

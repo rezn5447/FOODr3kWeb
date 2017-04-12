@@ -9,18 +9,24 @@ const styles = {
 class App extends Component {
 
   componentWillMount() {
-      this.state = {};
+      this.state = {
+        items: ['I\'m number 1', 'I\'m number 2', 'I\'m number 3'],
+        itemNumber: 3
+      };
   }
-  onHide() {
+  onAddItem() {
       this.setState({
-          opacity: 0
+        itemNumber: this.state.itemNumber + 1,
+        items: this.state.items.concat(['I\'m number ' + (this.state.itemNumber + 1)])
       });
   }
 
-  onScale() {
-      this.setState({
-          scale: this.state.scale > 1 ? 1 : 1.3
-      });
+  onDeleteItem(id) {
+    const newItems = this.state.items.slice();
+    newItems.splice(id, 1);
+    this.setState({
+      items: newItems
+    })
   }
 
   render() {
@@ -29,9 +35,9 @@ class App extends Component {
           <nav>
               <div className="nav-wrapper orange darken-2">
                   <ul className="left">
-                      <li className="active"><a href="#">TRANSITIONS</a></li>
+                      <li><a href="#">TRANSITIONS</a></li>
                       <li><a href="#">ANIMATIONS</a></li>
-                      <li><a href="#">REACTJS + CSS TRANSITIONS</a></li>
+                      <li className="active"><a href="#">REACTJS + CSS TRANSITIONS</a></li>
                       <li><a href="#">REACTJS + CSS ANIMATIONS</a></li>
                   </ul>
               </div>
@@ -45,21 +51,19 @@ class App extends Component {
 
               <div className="row">
                   <div className="s8 offset-s2 center-align">
-                      <div className="card deep-purple z-depth-2"
-                           style={{...styles, opacity: this.state.opacity, transform: 'scale(' + this.state.scale + ')'}}>
-                          <div className="card-content white-text">
-                              <span className="card-title">Awesome Animations!</span>
+                      <a className='waves-effect waves-light btn' onClick={this.onAddItem.bind(this)}>Add Item</a>
                               <p>CSS Animations are pretty cool. But combined with ReactJS ... &lt;3</p>
                           </div>
-                          <div className="card-action">
-                              <a onClick={this.onHide.bind(this)} style={{cursor: 'pointer'}}>HIDE</a>
-                              <a onClick={this.onScale.bind(this)} style={{cursor: 'pointer'}}>SCALE</a>
-                          </div>
+                          <ul className="collection">
+                            {this.state.items.map((item, i) => {
+                              return (
+                                <li key={item} className="collection-item" onClick={this.onDeleteItem.bind(this,i)} style={{cursor: 'pointer', textAlign: 'center'}}>{item}</li>
+                              )
+                            })}
+                          </ul>
                       </div>
                   </div>
               </div>
-          </div>
-      </div>
 
     );
   }

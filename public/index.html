@@ -15,6 +15,33 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+
+    <style>
+      .slide {
+        animation: slide 1s ease-in forwards;
+      }
+      .flip {
+        animation: flip 2s ease-out alternate 2;
+      }
+
+      @keyframes slide {
+        0% {
+          transform: translateX(0%);
+        }
+        100% {
+          transform: translateX(80px);
+        }
+      }
+
+      @keyframes flip {
+        0% {
+          transform: rotateY(0deg);
+        }
+        100% {
+          transform: rotateY(180deg);
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
